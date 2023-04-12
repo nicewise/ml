@@ -1,0 +1,62 @@
+* Dense layer
+create a dense layer
+#+begin_src julia
+  using Flux
+  predict = Dense(1 => 1)
+#+end_src
+
+#+RESULTS:
+: Dense(1 => 1)
+
+it has there field, respectively:
+weight:
+#+begin_src julia
+  predict.weight
+#+end_src
+
+#+RESULTS:
+
+bias:
+#+begin_src julia
+  predict.bias  
+#+end_src
+
+#+RESULTS:
+
+activation function:
+#+begin_src julia
+  predict.σ
+#+end_src
+
+#+RESULTS:
+
+define a loss function to evaluate the quality of prediction
+#+begin_src julia
+  using Statistics
+  loss(predict, x, y) = mean(abs2.(predict(x) .- y))
+#+end_src
+
+* train the model
+define a optimiser:
+#+begin_src julia
+  using Flux: train!
+  opt = Descent()
+  data = [(x_train, y_train)]
+#+end_src
+train the model:
+#+begin_src julia
+  train!(loss, predict, data, opt)
+#+end_src
+
+train more times:
+#+begin_src julia
+  for epoch in 1:200
+      train!(loss, predict, data, opt)
+  end
+#+end_src
+
+误差已经很小了：
+#+begin_src julia
+  loss(predict, x_train, y_train)
+  predict.weight, predict.bias
+#+end_src
